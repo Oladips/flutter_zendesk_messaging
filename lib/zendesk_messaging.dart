@@ -62,6 +62,7 @@ class ZendeskMessaging {
   static Future<void> initialize({
     required String androidChannelKey,
     required String iosChannelKey,
+    Map<String, Color>? colors,
   }) async {
     if (androidChannelKey.isEmpty || iosChannelKey.isEmpty) {
       debugPrint('ZendeskMessaging - initialize - keys can not be empty');
@@ -72,9 +73,21 @@ class ZendeskMessaging {
       _channel.setMethodCallHandler(
         _onMethodCall,
       ); // start observing channel messages
-      await _channel.invokeMethod('initialize', {
+
+      final Map<String, dynamic> arguments = {
         'channelKey': Platform.isAndroid ? androidChannelKey : iosChannelKey,
-      });
+      };
+      if (colors != null) {
+        arguments['colors'] = {
+          'onPrimary': colors['onPrimary']?.value,
+          'onMessage': colors['onMessage']?.value,
+          'onAction': colors['onAction']?.value,
+          'onPrimaryDark': colors['onPrimaryDark']?.value,
+          'onMessageDark': colors['onMessageDark']?.value,
+          'onActionDark': colors['onActionDark']?.value,
+        };
+      }
+      await _channel.invokeMethod('initialize', arguments);
       return;
     } catch (e) {
       debugPrint('ZendeskMessaging - initialize - Error: $e}');

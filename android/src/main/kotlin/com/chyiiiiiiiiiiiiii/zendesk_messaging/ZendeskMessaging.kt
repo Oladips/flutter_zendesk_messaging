@@ -40,8 +40,26 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
         }
     }
 
-    fun initialize(channelKey: String) {
+    fun initialize(channelKey: String, colors: Map<String, Long>?) {
         println("$tag - Channel Key - $channelKey")
+
+        val userColors = UserColors(
+            onPrimary = colors?.get("onPrimary")?.let { Color(it.toInt()) } ?: Color.Black,
+            onMessage = colors?.get("onMessage")?.let { Color(it.toInt()) } ?: Color.Black,
+            onAction = colors?.get("onAction")?.let { Color(it.toInt()) } ?: Color.Black
+        )
+
+        val userColorsDark = UserColors(
+            onPrimary = colors?.get("onPrimaryDark")?.let { Color(it.toInt()) } ?: Color.Black,
+            onMessage = colors?.get("onMessageDark")?.let { Color(it.toInt()) } ?: Color.Black,
+            onAction = colors?.get("onActionDark")?.let { Color(it.toInt()) } ?: Color.Black
+        )
+
+        val factory = DefaultMessagingFactory(
+            userLightColors = userColors,
+            userDarkColors = userColorsDark
+        )
+        
         Zendesk.initialize(
             plugin.activity!!,
             channelKey,
@@ -55,7 +73,7 @@ class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val c
                 println("$tag - initialize failure - $error")
                 channel.invokeMethod(initializeFailure, mapOf("error" to error.message))
             },
-            messagingFactory = DefaultMessagingFactory()
+            messagingFactory = factory
         )
     }
 
