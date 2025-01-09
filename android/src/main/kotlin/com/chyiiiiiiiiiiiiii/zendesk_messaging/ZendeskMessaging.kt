@@ -8,6 +8,7 @@ import zendesk.android.Zendesk
 import zendesk.android.ZendeskResult
 import zendesk.android.ZendeskUser
 import zendesk.messaging.android.DefaultMessagingFactory
+import zendesk.messaging.android.UserColors
 import zendesk.android.events.ZendeskEvent
 import zendesk.android.events.ZendeskEventListener
 
