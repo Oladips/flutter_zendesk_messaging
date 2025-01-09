@@ -11,6 +11,7 @@ import zendesk.messaging.android.DefaultMessagingFactory
 import zendesk.messaging.android.UserColors
 import zendesk.android.events.ZendeskEvent
 import zendesk.android.events.ZendeskEventListener
+import android.graphics.Color
 
 
 class ZendeskMessaging(private val plugin: ZendeskMessagingPlugin, private val channel: MethodChannel) {
